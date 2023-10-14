@@ -1,0 +1,30 @@
+# 文件名称：.gitignore
+# 文件作用：忽略指定文件
+
+# macOS
+.DS_Store
+
+# CMake
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+/cmake_install.cmake
+/Makefile
+
+# linux 
+*.o
+*.so
+*.a
+*.out
+
+# windows
+*.obj
+*.dll
+*.exe
+*.ilk
+*.pdb
+*.manifest
+*.suo
+*.sdf
+*.opensdf
+*.user
