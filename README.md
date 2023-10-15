@@ -30,7 +30,6 @@ Acoular是一个用于声波波束成像的Python模块，它在新的BSD许可�
 - 支持脚本和图形用户界面
 - 高效：智能缓存，Numba并行计算
 - 易于扩展和文档化
-- 依赖项
 
 # 依赖项
 Acoular在Linux，Windows和MacOS下运行，需要Python 3.9，3.8，3.7或3.6安装，并可用Numpy，Scipy，Traits，scikit-learn，pytables，numba包。建议使用Matplotlib，但不是必需的。
@@ -38,3 +37,9 @@ Acoular在Linux，Windows和MacOS下运行，需要Python 3.9，3.8，3.7或3.6�
 # acoular_cpp
 
 说明：acoular_cpp是acoular的C++版本，用于加速计算，目前只实现了一部分功能，后续会继续完善。
+
+# 目录结构
+
+- acoular_cpp : acoular的C++版本
+- doc : 文档
+- examples : 示例

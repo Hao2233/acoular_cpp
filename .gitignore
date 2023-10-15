@@ -5,11 +5,11 @@
 .DS_Store
 
 # CMake
-/build/
-/CMakeFiles/
-/CMakeCache.txt
-/cmake_install.cmake
-/Makefile
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
 
 # linux 
 *.o
@@ -28,3 +28,6 @@
 *.sdf
 *.opensdf
 *.user
+
+# vs code
+.vscode/
