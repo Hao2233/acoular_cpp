@@ -43,3 +43,9 @@ Acoular在Linux，Windows和MacOS下运行，需要Python 3.9，3.8，3.7或3.6�
 - acoular_cpp : acoular的C++版本
 - doc : 文档
 - examples : 示例
+
+## 运行环境
+
+目前我的开发环境为macOS，测试环境也是macOS
+
+其他平台暂时没有测试
