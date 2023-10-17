@@ -31,7 +31,7 @@ std::string Config::cache_dir() const {
         }
         cache_dir = _cache_dir;
 
-        // github 源码
+        // 源码 没搞清楚这里为什么这样写，报错
         // _cache_dir = cache_dir
     }
     return cache_dir;
