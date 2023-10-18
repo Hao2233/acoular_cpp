@@ -3,7 +3,7 @@
 namespace acoular_cpp
 {
 
-std::vector<double> synthetic(std::vector<double> data, std::vector<double> freqs, std::vector<double> f, int num = 3) {
+std::vector<double> synthetic(std::vector<double> data, std::vector<double> freqs, std::vector<double> f, int num) {
     std::vector<double> result;
     if (f.size() == 1) {
         double freq = f[0];

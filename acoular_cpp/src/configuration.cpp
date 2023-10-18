@@ -66,16 +66,7 @@ void Config::set_use_traitsui(bool use_traitsui) {
 
 void Config::_assert_h5library()
 {
-    // python 中说查看HDF5库是否可以使用
-    // c++这里就判断HDF5文件是否存在或者缓存目录是否为空
-    if (_cache_dir.empty())
-    {
-        std::cout << "HDF5库没有安装" << std::endl;
-    }
-    else
-    {
-        std::cout << "HDF5库安装了" << std::endl;
-    }
+    // python 中说查看HDF5库是否引入
 }
 
 }
