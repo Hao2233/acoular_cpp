@@ -3,22 +3,27 @@
 #include <sstream>
 #include <stdexcept>
 
-namespace acoular_cpp {
+namespace acoular_cpp
+{
 
-MicGeom::MicGeom(const std::string& from_file, bool validate_file)
+MicGeom::MicGeom(const std::string &from_file, bool validate_file)
     : from_file_(from_file), validate_file_(validate_file), num_mics_(0), center_(nullptr), aperture_(0.0), mpos_(nullptr)
 {
     // 从文件中读取麦克风阵列的几何信息
     std::ifstream file(from_file_);
-    if (!file.is_open()) {
+    if (!file.is_open())
+    {
         throw std::runtime_error("Failed to open file: " + from_file_);
     }
 
     // 读取文件名
     size_t pos = from_file_.find_last_of("/\\");
-    if (pos != std::string::npos) {
+    if (pos != std::string::npos)
+    {
         basename_ = from_file_.substr(pos + 1);
-    } else {
+    }
+    else
+    {
         basename_ = from_file_;
     }
 
@@ -47,17 +52,17 @@ MicGeom::~MicGeom()
     delete[] mpos_;
 }
 
-const std::string& MicGeom::get_basename() const
+const std::string &MicGeom::get_basename() const
 {
     return basename_;
 }
 
-const std::vector<int>& MicGeom::get_invalid_channels() const
+const std::vector<int> &MicGeom::get_invalid_channels() const
 {
     return invalid_channels_;
 }
 
-void MicGeom::set_invalid_channels(const std::vector<int>& invalid_channels)
+void MicGeom::set_invalid_channels(const std::vector<int> &invalid_channels)
 {
     invalid_channels_ = invalid_channels;
 }
@@ -67,7 +72,7 @@ int MicGeom::get_num_mics() const
     return num_mics_;
 }
 
-const double* MicGeom::get_center() const
+const double *MicGeom::get_center() const
 {
     return center_;
 }
@@ -77,7 +82,7 @@ double MicGeom::get_aperture() const
     return aperture_;
 }
 
-const double* MicGeom::get_mpos() const
+const double *MicGeom::get_mpos() const
 {
     return mpos_;
 }
@@ -91,7 +96,8 @@ void MicGeom::import_mpos()
     std::string line;
     std::getline(file, line);
     std::getline(file, line);
-    for (int i = 0; i < num_mics_; ++i) {
+    for (int i = 0; i < num_mics_; ++i)
+    {
         std::getline(file, line);
         std::istringstream iss(line);
         iss >> mpos_[i * 3] >> mpos_[i * 3 + 1] >> mpos_[i * 3 + 2];

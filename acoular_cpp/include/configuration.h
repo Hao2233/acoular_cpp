@@ -12,25 +12,28 @@ namespace acoular_cpp
 /**
  * @brief 配置类，用于管理全局缓存、HDF5库、缓存目录、时间数据目录和TraitsUI的使用。
  */
-class Config {
+class Config
+{
 public:
     /**
      * @brief 全局缓存模式枚举。
      */
-    enum GlobalCaching {
+    enum GlobalCaching
+    {
         INDIVIDUAL, /**< 每个对象单独缓存 */
-        ALL, /**< 所有对象共享缓存 */
-        NONE, /**< 不使用缓存 */
-        READONLY, /**< 只读缓存 */
-        OVERWRITE /**< 覆盖缓存 */
+        ALL,        /**< 所有对象共享缓存 */
+        NONE,       /**< 不使用缓存 */
+        READONLY,   /**< 只读缓存 */
+        OVERWRITE   /**< 覆盖缓存 */
     };
 
     /**
      * @brief HDF5库枚举。
      */
-    enum H5Library {
+    enum H5Library
+    {
         PYTABLES, /**< PyTables库 */
-        H5PY /**< h5py库 */
+        H5PY      /**< h5py库 */
     };
 
     /**
@@ -72,7 +75,7 @@ public:
      * @brief 设置缓存目录。
      * @param cache_dir 缓存目录。
      */
-    void set_cache_dir(const std::string& cache_dir);
+    void set_cache_dir(const std::string &cache_dir);
 
     /**
      * @brief 获取时间数据目录。
@@ -84,7 +87,7 @@ public:
      * @brief 设置时间数据目录。
      * @param td_dir 时间数据目录。
      */
-    void set_td_dir(const std::string& td_dir);
+    void set_td_dir(const std::string &td_dir);
 
     /**
      * @brief 获取是否使用TraitsUI。
@@ -100,16 +103,15 @@ public:
 
 private:
     GlobalCaching _global_caching; /**< 全局缓存模式 */
-    H5Library _h5library; /**< HDF5库 */
-    std::string _cache_dir; /**< 缓存目录 */
-    std::string _td_dir; /**< 时间数据目录 */
-    bool _use_traitsui; /**< 是否使用TraitsUI */
+    H5Library _h5library;          /**< HDF5库 */
+    std::string _cache_dir;        /**< 缓存目录 */
+    std::string _td_dir;           /**< 时间数据目录 */
+    bool _use_traitsui;            /**< 是否使用TraitsUI */
 
     /**
      * @brief 检查HDF5库是否可用。
      */
     void _assert_h5library();
 };
-
 } // namespace acoular_cpp
 #endif // _CONFIGURATION_H_

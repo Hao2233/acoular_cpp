@@ -6,10 +6,8 @@
 
 namespace acoular_cpp
 {
-// MicGeom class
-// 作用：麦克风阵列类，用于描述阵元的位置
 /**
- * @brief MicGeom类用于处理麦克风阵列的几何信息
+ * @brief MicGeom类用于处理麦克风阵列的几何信息 麦克风阵列类，用于描述阵元的位置
  */
 class MicGeom {
 public:

@@ -6,12 +6,20 @@
 
 namespace acoular_cpp
 {
-// 计算对象的哈希值
+
+/**
+ * @brief 计算对象的哈希值
+ * @param obj 对象
+ * @param name 名字
+*/
 std::string digest(const void* obj, const std::string& name = "digest");
 
-// 计算哈希值列表的哈希值
+/**
+ * @brief 计算哈希列表的哈希值
+ * @param 哈希列表
+ * @return 哈希值
+*/
 std::string ldigest(const std::vector<std::string>& l);
 
 } // namespace acoular_cpp
-
 #endif // _INTERNAL_H_

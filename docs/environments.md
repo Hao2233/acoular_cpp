@@ -4,6 +4,16 @@
 
 该文件主要是acoular库的环境
 
+主要包含的类有：
+
+1. Environment
+2. UniformFlowEnvironment
+3. GeneralFlowEnvironment
+4. FlowField
+5. OpenJet
+6. RotatingFlow
+7. SlotJet
+
 ### `def dist_mat(gpos,mpos):`
 
 该函数用于计算3D空间中两组点之间的距离矩阵。它接受两个NumPy数组作为输入：gpos和mpos。gpos是一个3xN的数组，包含N个3D空间中的点，mpos是一个3xM的数组，包含M个3D空间中的点。该函数返回一个NxM的距离矩阵。
@@ -159,17 +169,40 @@ get_interpolator 方法获取一个 LinearNDInterpolator 对象，用于在由�
 + b： 要覆盖的球体部分的中心方向
 + 函数返回一个二维向量，其中每行表示一个方向作为笛卡尔坐标中的单位向量。
 
+###  `std::vector<double> norm(std::vector<std::vector<double>> x, double ord = 2, int axis = -1, bool keepdims = false);`
++ 函数作用： 用于计算输入数组X的矩阵
++ x：一个包含浮点数的二维数组，表示一个矩阵或向量
++ ord： 范数的阶数
++ axis： 范数计算的轴
++ keepdims： 如果为true，则保留轴上的尺寸
++ 返回值： 一个包含浮点数的一维数组，表示范数
+
+### `double norm(std::vector<std::vector<double>> x, double ord = 2);`
++ 函数作用用于计算输入数组X的范数
++ x：一个包含浮点数的二维数组，表示一个矩阵或向量
++ ord：范数的阶数
++ 返回值：一个包含浮点数的一维数组，表示范数
+
+### `double norm(std::vector<double> x, double ord = 2);`
++ 函数作用：用于计算输入数组x的范数
++ x：一个包含浮点数的一维数组，表示一个向量
++ ord：范数的阶数
++ 返回值：一个包含浮点数的一维数组，表示范数
+
 ### Environment 类介绍
 
 环境类，用于计算声学环境中的声学参数
 
 成员变量：
-+ double c = 343.0; 声速
-+ std::vector<std::vector<double>> roi; 感兴趣区域
-+ std::string digest; 内部标识符
-+ std::string get_digest(); 计算内部标识符的函数
++ double c = 343.0; 声速，单位m/s
++ std::string digest; 用于缓存计算结果的哈希值
++ std::vector<std::vector<double>> roi; 区域 用于指定声学计算的区域
 
 成员函数：
+
+`std::string get_digest();`
++ 计算哈希值
++ 返回值：哈希值
 
 `std::vector<std::vector<double>> r(std::vector<std::vector<double>> gpos, std::vector<std::vector<double>> mpos = {{0.0, 0.0, 0.0}});`
 
@@ -183,9 +216,9 @@ get_interpolator 方法获取一个 LinearNDInterpolator 对象，用于在由�
 均匀流场环境类，用于描述均匀流场环境
 
 成员变量：
-+ double ma = 0.0; /**< 马赫数 */
-+ std::vector<double> fdv = {1.0, 0.0, 0.0}; /**< 流动方向向量 */
-+ std::string digest; /**< 哈希值 */
++ double ma = 0.0; 马赫数 
++ std::vector<double> fdv = {1.0, 0.0, 0.0}; 流动方向向量
++ std::string digest; 哈希值
 
 成员函数：
 
@@ -207,16 +240,12 @@ get_interpolator 方法获取一个 LinearNDInterpolator 对象，用于在由�
 
 流场类，提供流场速度场的计算
 
-成员变量：
-+ std::string digest = ""; 流场的唯一标识符
-
 成员函数：
 
 `virtual std::tuple<std::vector<double>, std::vector<std::vector<double>>> v(std::vector<double> xx) = 0;`
 + 函数功能 计算流场速度场
-+ xx 流场位置
++ xx 输入的流场位置坐标
 + return 返回速度场和速度梯度场
-
 
 ### SlotJet 类介绍
 
@@ -228,6 +257,7 @@ get_interpolator 方法获取一个 LinearNDInterpolator 对象，用于在由�
 + std::vector<double> flow = {1.0, 0.0, 0.0}; 气流方向
 + std::vector<double> plane = {0.0, 1.0, 0.0}; 平面法向量
 + double B = 0.2; 槽口宽度
++ std::string digest 哈希值
 
 成员函数：
 
@@ -273,8 +303,4 @@ OpenJet类，继承自FlowField类，表示开放式喷流环境
 ### GeneralFlowEnvironment 类介绍
 
 
-
-
-
-
-## 3. c++代码实例
+## 3. 补充说明

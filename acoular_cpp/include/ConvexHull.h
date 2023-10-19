@@ -1,5 +1,5 @@
-#ifndef _CONVEXHULL_H
-#define _CONVEXHULL_H
+#ifndef _CONVEXHULL_H_
+#define _CONVEXHULL_H_
 
 #include <vector>
 #include <algorithm>
@@ -9,10 +9,11 @@ namespace acoular_cpp
 /**
  * @brief ConvexHull类用于计算二维点集的凸包
  */
-class ConvexHull {
+class ConvexHull
+{
 public:
     std::vector<std::vector<double>> points; /**< 存储点集的二维坐标 */
-    std::vector<int> vertices; /**< 存储凸包的顶点编号 */
+    std::vector<int> vertices;               /**< 存储凸包的顶点编号 */
     std::vector<std::vector<int>> simplices; /**< 存储凸包的三角形面片 */
 
     /**
@@ -23,12 +24,11 @@ public:
 
     /**
      * @brief ConvexHull类的构造函数，用于计算给定点集的凸包
-     * 
+     *
      * @param _points 给定的点集，每个元素是一个二维坐标点的vector
      * @param _values 给定的点集对应的值，每个元素是一个值的vector
      */
     ConvexHull(std::vector<std::vector<double>> _points, std::vector<std::vector<double>> _values);
-    
 
 private:
     /**
@@ -52,4 +52,4 @@ private:
     std::vector<std::vector<int>> _compute_simplices();
 };
 } // namespace acoular_cpp
-#endif // _CONVEXHULL_H
+#endif // _CONVEXHULL_H_

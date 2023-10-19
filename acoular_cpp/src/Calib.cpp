@@ -11,25 +11,30 @@
 
 namespace acoular_cpp
 {
-Calib::Calib(const std::string& from_files) : from_file(from_files), num_mics(0)
+Calib::Calib(const std::string &from_files) : from_file(from_files), num_mics(0)
 {
     import_data();
 }
 
-std::string Calib::get_basename() const {
+std::string Calib::get_basename() const
+{
     return from_file;
 }
 
-int Calib::get_num_mics() const {
+int Calib::get_num_mics() const
+{
     return num_mics;
 }
 
-std::vector<double> Calib::get_data() const {
+std::vector<double> Calib::get_data() const
+{
     return data;
 }
 
-void Calib::import_data() {
-    if (!std::ifstream(from_file)) {
+void Calib::import_data()
+{
+    if (!std::ifstream(from_file))
+    {
         // 空文件
         data.resize(1);
         data[0] = 1.0;
@@ -40,8 +45,10 @@ void Calib::import_data() {
     std::vector<std::string> names;
     std::ifstream file(from_file);
     std::string line;
-    while (std::getline(file, line)) {
-        if (line.find("<pos") != std::string::npos) {
+    while (std::getline(file, line))
+    {
+        if (line.find("<pos") != std::string::npos)
+        {
             std::string name = line.substr(line.find("Name=\"") + 6);
             name = name.substr(0, name.find("\""));
             names.push_back(name);
