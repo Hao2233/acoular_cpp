@@ -84,5 +84,19 @@ std::vector<double> barspectrum(std::vector<double> data, std::vector<double> ff
 */
 std::pair<std::vector<double>, std::vector<double>> bardata(std::vector<double> data, std::vector<double> fc, bool bar = true, double xoffset = 0.0, int num = 3, double masked = -360.0);
 
+// TODO 在tool文件中新增加一些c++的工具函数
+// 新增加一个log日志enum头文件
+
+// 1. 矩阵写入文件函数
+//  1. 一维矩阵
+//  2. 二维矩阵
+
+
+// 2. log日志函数
+
+
+
+
+
 } // namespace acoular_cpp
 #endif // _TOOLS_H_

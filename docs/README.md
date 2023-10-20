@@ -17,10 +17,7 @@ docs
 
 ## example
 
-class_example 目录主要存放一些类的使用示例，用于说明类的使用方法
-
 python_example 目录主要存放一些python的使用示例，用于检测c++实现的代码是否正确
-
 
 
 ## 补充说明

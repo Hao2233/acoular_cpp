@@ -35,29 +35,4 @@ C++中的Calib类是一个用于多通道时间信号校准的容器，它实现
 3. get_data() : 返回校准因子的数组。
 4. get_num_mics() : 返回校准数据中的麦克风数量。
 
-## 3. （C++）代码示例
-
-```cpp
-#include "Calib.h"
-
-#include <iostream>
-
-int main() {
-    // 创建 Calib 对象并从文件中读取数据
-    acoular_cpp::Calib calib("example_calib.xml");
-
-    // 打印文件名和麦克风数量
-    std::cout << "文件名称: " << calib.get_basename() << std::endl;
-    std::cout << "麦克风数据: " << calib.get_num_mics() << std::endl;
-
-    // 打印校准数据
-    std::vector<double> data = calib.get_data();
-
-    std::cout << "校准数据:" << std::endl;
-    for (int i = 0; i < data.size(); i++) {
-        std::cout << data[i] << std::endl;
-    }
-
-    return 0;
-}
-```
+## 3. 补充说明

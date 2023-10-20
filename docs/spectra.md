@@ -26,4 +26,5 @@ synthetic函数通常与Beamformer类的result方法一起使用，以获取特�
 
 总的来说，synthetic函数是一个有用的工具，用于计算频率带的合成频率值。它很灵活，可以处理不同的data、freqs、f和num值。但是，需要注意的是，该函数依赖于其他函数和类，如pow、vector和lower_bound，这些函数和类必须在代码的其他地方定义。
 
-## 3. （C++）代码示例
+## 3. 补充说明
+
