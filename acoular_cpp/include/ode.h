@@ -5,10 +5,12 @@
 #include <string>
 #include <functional>
 
+#include "tools.h"
+
 namespace acoular_cpp
 {
 /**
- * @brief Ode类用于求解常微分方程
+ * @brief ode类用于求解常微分方程
  *
  */
 class ode
@@ -94,6 +96,10 @@ private:
     std::function<void(double, const std::vector<double> &, std::vector<double> &)> jac; ///< 右端函数的雅可比矩阵
     std::vector<double> f_params;                                                        ///< 右端函数的参数
     std::vector<double> jac_params;                                                      ///< 右端函数的雅可比矩阵的参数
+    int return_code = 0;                                                                 ///< 返回码 
+    std::string integrator_name = "vode";                                                ///< 积分器名称,默认为vode
+    int func(double t, const double y[], double f[], void *params);                     ///< GSL库的常微分方程右端函数
+
 };
 } // namespace acoular_cpp
 #endif // _ODE_H_

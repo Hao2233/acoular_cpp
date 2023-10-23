@@ -96,4 +96,11 @@ lOrder参数是一个整数，指定球谐函数的最大阶数。direction参�
 + masked : 浮点数， 用于表示掩码的值
 + 返回值： 一个包含两个浮点数的数组， 表示频率带的下限和上限以及相应的值
 
+### `void log(enum log_status sta,const std::string mes);`
++ 函数功能： 记录日志函数
++ sta：enum类型数据，日志类型，详细见 log_status.h文件
++ mes：string类型，需要记录的信息
++ 该函数会创建一个log文件夹，按照日期记录文件日志
+
+
 ## 3. 补充说明

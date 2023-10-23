@@ -7,9 +7,14 @@
 #include <cmath>
 #include <iostream>
 #include <algorithm>
+#include <fstream>
+#include <string>
+#include <filesystem>
+#include <sstream>
 
 #include "tprocess.h"
 #include "spectra.h"
+#include "log_status.h"
 
 /**
  * @brief 工具函数，用于处理声学信号
@@ -85,18 +90,21 @@ std::vector<double> barspectrum(std::vector<double> data, std::vector<double> ff
 std::pair<std::vector<double>, std::vector<double>> bardata(std::vector<double> data, std::vector<double> fc, bool bar = true, double xoffset = 0.0, int num = 3, double masked = -360.0);
 
 // TODO 在tool文件中新增加一些c++的工具函数
-// 新增加一个log日志enum头文件
 
 // 1. 矩阵写入文件函数
 //  1. 一维矩阵
 //  2. 二维矩阵
 
 
-// 2. log日志函数
-
-
-
-
+/**
+ * @brief log 日志函数
+ * 
+ * @param sta 日志类型
+ * @param mes 信息
+ * 
+ * @note 日志文件夹：log 按照日期记录
+ */
+void log(enum log_status sta,const std::string mes);
 
 } // namespace acoular_cpp
 #endif // _TOOLS_H_
