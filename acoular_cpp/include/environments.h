@@ -271,15 +271,6 @@ public:
      * @return 插值器
      */
     LinearNDInterpolator get_interpolator(std::vector<std::vector<double>> roi, std::vector<double> x0);
-
-    /**
-     * 获取插值器
-     * @param roi 区域
-     * @param x0 坐标
-     * @return 插值器
-     */
-    LinearNDInterpolator get_interpolator(std::vector<std::vector<double>> roi, std::vector<double> x0);
-
 private:
     double c = 343.0; // 空气中的声速
 

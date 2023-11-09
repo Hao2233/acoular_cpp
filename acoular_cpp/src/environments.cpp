@@ -43,8 +43,7 @@ std::vector<std::vector<double>> cartToCyl(std::vector<std::vector<double>> x, s
             xc[i][2] = Q[2][0] * x1 + Q[2][1] * y1 + Q[2][2] * z1;
         }
     }
-    // TOD 这里有bug
-    std::vector<std::vector<double>> cyl(n, std::vector<double>);
+    std::vector<std::vector<double>> cyl(n, std::vector<double>(3,0.0));
     for (int i = 0; i < n; i++)
     {
         double x1 = xc[i][0];
@@ -389,7 +388,7 @@ std::tuple<std::vector<double>, std::vector<std::vector<double>>> RotatingFlow::
 
 GeneralFlowEnvironment::GeneralFlowEnvironment(Environment _ff, int _N, double _Om)
 {
-    ff = _ff;
+    //ff = _ff;
     N = _N;
     Om = _Om;
 }
@@ -406,7 +405,7 @@ std::vector<std::vector<double>> GeneralFlowEnvironment::_r(std::vector<std::vec
         auto x0 = mpos[micnum];
         auto x = x0;
         auto li = get_interpolator(gpos, x0);
-        auto dist = li(x)[0];
+        auto dist = li(x);
     }
     if (gt[0].size() == 1)
     {
@@ -426,163 +425,6 @@ LinearNDInterpolator GeneralFlowEnvironment::get_interpolator(std::vector<std::v
     std::vector<double> t;
 
     return LinearNDInterpolator();
-}
-
-LinearNDInterpolator GeneralFlowEnvironment::get_interpolator(std::vector<std::vector<double>> roi, std::vector<double> x0)
-{
-    double c = this->c;
-
-    auto f1 = [&](double t, std::vector<double> y, std::function<std::tuple<std::vector<double>, std::vector<std::vector<double>>>(std::vector<double>)> v)
-    {
-        std::vector<double> x(y.begin(), y.begin() + 3);
-        std::vector<double> s(y.begin() + 3, y.end());
-        auto [vv, dv] = v(x);
-        double sa = sqrt(s[0] * s[0] + s[1] * s[1] + s[2] * s[2]);
-        std::vector<double> res(6);
-        res[0] = c * s[0] / sa - vv[0];                                // time reversal
-        res[1] = c * s[1] / sa - vv[1];                                // time reversal
-        res[2] = c * s[2] / sa - vv[2];                                // time reversal
-        res[3] = -s[0] * dv[0][0] - s[1] * dv[1][0] - s[2] * dv[2][0]; // time reversal
-        res[4] = -s[0] * dv[0][1] - s[1] * dv[1][1] - s[2] * dv[2][1]; // time reversal
-        res[5] = -s[0] * dv[0][2] - s[1] * dv[1][2] - s[2] * dv[2][2]; // time reversal
-        return res;
-    };
-
-    // integration along a single ray
-    auto fr = [&](std::vector<double> x0, std::vector<double> n0, double rmax,
-                    double dt, std::function<std::tuple<std::vector<double>, std::vector<std::vector<double>>>(std::vector<double>)> v,
-                    std::vector<std::vector<double>> &xyz, std::vector<double> &t)
-    {
-        /*
-        std::vector<double> s0(3);
-        for (int i = 0; i < 3; i++)
-        {
-            s0[i] = n0[i] / (c + v(x0) * n0[i]);
-        }
-        std::vector<double> y0(6);
-        for (int i = 0; i < 3; i++)
-        {
-            y0[i] = x0[i];
-            y0[i + 3] = s0[i];
-        }
-        double t0 = 0;
-        while (t0 < rmax / c)
-        {
-            std::vector<double> y = y0;
-            std::vector<double> k1 = f1(t0, y, v);
-            for (int i = 0; i < 6; i++)
-            {
-                y[i] = y0[i] + k1[i] * dt / 2;
-            }
-            std::vector<double> k2 = f1(t0 + dt / 2, y, v);
-            for (int i = 0; i < 6; i++)
-            {
-                y[i] = y0[i] + k2[i] * dt / 2;
-            }
-            std::vector<double> k3 = f1(t0 + dt / 2, y, v);
-            for (int i = 0; i < 6; i++)
-            {
-                y[i] = y0[i] + k3[i] * dt;
-            }
-            std::vector<double> k4 = f1(t0 + dt, y, v);
-            for (int i = 0; i < 6; i++)
-            {
-                y0[i] += (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]) * dt / 6;
-            }
-            xyz.push_back(std::vector<double>(y0.begin(), y0.begin() + 3));
-            t.push_back(t0);
-            t0 += dt;
-            if (sqrt(pow(y0[0] - x0[0], 2) + pow(y0[1] - x0[1], 2) + pow(y0[2] - x0[2], 2)) > rmax)
-            {
-                break;
-            }
-        }
-        */
-
-        std::vector<double> s0;
-        for (int i = 0; i < n0.size(); i++)
-        {
-            s0.push_back(n0[i] / (c + std::get<0>(v(x0))[0] * n0[i]));
-        }
-
-        std::vector<double> y0;
-        for (int i = 0; i < x0.size(); i++)
-        {
-            y0.push_back(x0[i]);
-        }
-        for (int i = 0; i < s0.size(); i++)
-        {
-            y0.push_back(s0[i]);
-        }
-    };
-
-    int gs2 = roi[0].size();
-    auto vv = ff.v();
-    int NN = sqrt(this->N);
-    std::vector<double> xe(3);
-    for (int i = 0; i < 3; i++)
-    {
-        xe[i] = std::accumulate(roi[i].begin(), roi[i].end(), 0.0) / roi[i].size();
-    }
-    std::vector<std::vector<double>> roi_mat(roi[0].size(), std::vector<double>(3));
-    for (int i = 0; i < roi[0].size(); i++)
-    {
-        for (int j = 0; j < 3; j++)
-        {
-            roi_mat[i][j] = roi[j][i];
-        }
-    }
-    std::vector<double> x0_vec = x0;
-    std::vector<std::vector<double>> r(roi[0].size(), std::vector<double>(3));
-    for (int i = 0; i < roi[0].size(); i++)
-    {
-        for (int j = 0; j < 3; j++)
-        {
-            r[i][j] = x0_vec[j] - roi_mat[i][j];
-        }
-    }
-    double rmax = 0;
-    for (int i = 0; i < roi[0].size(); i++)
-    {
-        double dist = 0;
-        for (int j = 0; j < 3; j++)
-        {
-            dist += pow(r[i][j], 2);
-        }
-        rmax = std::max(rmax, sqrt(dist));
-    }
-    std::vector<std::vector<double>> nv = spiral_sphere(this->N, this->Om, std::vector<double>(x0.begin(), x0.end()) - xe);
-    double rstep = rmax / sqrt(this->N);
-    rmax += rstep;
-    double tstep = rstep / c;
-    std::vector<std::vector<double>> xyz;
-    std::vector<double> t;
-    int lastind = 0;
-    for (int i = 0; i < nv.size(); i++)
-    {
-        fr(x0, nv[i], rmax, tstep, vv, xyz, t);
-        if (i && i % NN == 0)
-        {
-            if (!lastind)
-            {
-                std::vector<std::vector<double>> points = roi;
-                points.insert(points.end(), xyz.begin(), xyz.end());
-                auto [tri, hull] = ConvexHull(points);
-            }
-            else
-            {
-                std::vector<std::vector<double>> points(xyz.begin() + lastind, xyz.end());
-                auto [tri, hull] = ConvexHull(points, true);
-            }
-            lastind = xyz.size();
-            // ConvexHull includes grid if no grid points on hull
-            if (*std::min_element(hull.begin(), hull.end()) >= gs2)
-            {
-                break;
-            }
-        }
-    }
-    return LinearNDInterpolator(xyz, t);
 }
 
 std::vector<double> GeneralFlowEnvironment::hstack(std::vector<double> a, std::vector<double> b)

@@ -21,11 +21,5 @@ elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
     set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 endif ()
 
-# 设置头文件路径
-include_directories(/Users/zhanghao/code/cpp/acoular_cpp/acoular_cpp/include)
-
-# 设置源文件路径
-aux_source_directory(./src SRC_DIR)
-
 # 设置生成的可执行文件
-add_executable(demo main.cpp ${SRC_DIR})
+add_executable(demo main.cpp)

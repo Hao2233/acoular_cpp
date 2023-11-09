@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(demo)
+project(spdlog_demo)
 
 # 设置语言标准
 set(CMAKE_CXX_STANDARD 17)
@@ -21,11 +21,14 @@ elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
     set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 endif ()
 
-# 设置头文件路径
-include_directories(/Users/zhanghao/code/cpp/acoular_cpp/acoular_cpp/include)
+# 设置sodlog库位置
+set(SPDLOG_DIR /Users/zhanghao/code/SDK/spdlog)
 
-# 设置源文件路径
-aux_source_directory(./src SRC_DIR)
+# 设置spdlog头文件路径
+include_directories(${SPDLOG_DIR}/include)
+
+# 设置spdlog库路径
+link_directories(${SPDLOG_DIR}/lib)
 
 # 设置生成的可执行文件
-add_executable(demo main.cpp ${SRC_DIR})
+add_executable(spdlog_demo main.cpp)

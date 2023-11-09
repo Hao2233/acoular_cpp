@@ -203,7 +203,7 @@ std::pair<std::vector<double>, std::vector<double>> bardata(std::vector<double> 
     double ep = 1.0 / (2.0 * num);
     if (bar)
     {
-        // upper and lower band borders
+        // 上下频率带边界
         std::vector<double> flu(fc.size() + 1);
         flu[0] = fc[0] * std::pow(2, -ep);
         flu[fc.size()] = fc[fc.size() - 1] * std::pow(2, ep);
@@ -211,14 +211,14 @@ std::pair<std::vector<double>, std::vector<double>> bardata(std::vector<double> 
         {
             flu[i] = (fc[i - 1] * std::pow(2, ep) + fc[i] * std::pow(2, -ep)) / 2.0;
         }
-        // band borders as coordinates for bar plotting
+        // 频率带边界作为条形图的坐标
         flulist.resize(flu.size() * 2 - 2);
         for (int i = 1; i < flu.size() - 1; i++)
         {
             flulist[2 * i - 2] = std::pow(2, xoffset / num) * flu[i];
             flulist[2 * i - 1] = std::pow(2, xoffset / num) * flu[i];
         }
-        // sound pressures as list for bar plotting
+        // 频率带的值
         plist.resize(data.size() * (flu.size() - 2));
         for (int i = 0; i < data.size(); i++)
         {
@@ -246,30 +246,41 @@ std::pair<std::vector<double>, std::vector<double>> bardata(std::vector<double> 
     return std::make_pair(flulist, plist);
 }
 
-void log(enum log_status sta,const std::string mes)
+int to_file(const std::vector<double> &data, const std::string &filename)
 {
-    // 判断是否存在log文件夹
-    if (!std::filesystem::exists(std::filesystem::path("log")))
+    std::ofstream file(filename);
+    if (!file.is_open())
     {
-        std::filesystem::create_directory(std::filesystem::path("log"));
+        std::cerr << "to_file: cannot open file " << filename << std::endl;
+        return 1;
+    }
+    for (const auto &d : data)
+    {
+        file << d << std::endl;
     }
 
-    // 判断log_status 类型
-    std::string log_file_name;
-    if (sta == ERROR)
+    return 0;
+}
+
+int to_file(const std::vector<std::vector<double>> &data, const std::string &filename)
+{
+    std::ofstream file(filename);
+    if (!file.is_open())
     {
-        time_t now = time(0);
-        tm *ltm = localtime(&now);
-        log_file_name = "log/" + std::to_string(1900 + ltm->tm_year) + "-" + 
-            std::to_string(1 + ltm->tm_mon) + "-" + std::to_string(ltm->tm_mday) + ".err";
+        std::cerr << "to_file: cannot open file " << filename << std::endl;
+        return 1;
     }
-    else
+
+    for (const auto &d : data)
     {
-        time_t now = time(0);
-        tm *ltm = localtime(&now);
-        log_file_name = "log/" + std::to_string(1900 + ltm->tm_year) + "-" + 
-            std::to_string(1 + ltm->tm_mon) + "-" + std::to_string(ltm->tm_mday) + ".log";
+        for (const auto &dd : d)
+        {
+            file << dd << "\t" << std::endl;
+        }
+        file << std::endl;
     }
+
+    return 0;
 }
 
 } // namespace acoular_cpp

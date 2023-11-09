@@ -1,90 +1,61 @@
 #include "ode.h"
 
-// GSL 库
-#include "gsl/gsl_errno.h"
-#include "gsl/gsl_odeiv2.h"
+#include <iostream>
+#include <vector>
+#include <cmath>
 
 namespace acoular_cpp
 {
-void ode::set_initial_value(const std::vector<double> &y0, double t0)
+ODE::ODE(int (* func)(double t, const double y[], double dydt[], void * params),
+        int (* jac)(double t, const double y[], double * dfdy, double dfdt[], void * params),
+        size_t dimension)
 {
-    if (y0.size() == 1)
-    {
-        y = {y0[0]};
+    sys.function = func;
+    sys.jacobian = jac;
+    sys.dimension = dimension;
+    sys.params = nullptr;
+}
+
+void ODE::set_initial_value(const std::vector<double> &y0) {
+    this->y0 = y0;
+}
+
+void ODE::set_f_params(const std::vector<double> &params) {
+    this->f_params = params;
+    sys.params = this->f_params.data();
+}
+
+void ODE::set_jac_params(const std::vector<double> &params) {
+    this->jac_params = params;
+}
+
+void ODE::set_integrator(const std::string &name) {
+    this->integrator_name = name;
+}
+
+void ODE::solve() {
+    const gsl_odeiv2_step_type * T = gsl_odeiv2_step_rk8pd;
+    gsl_odeiv2_step * s = gsl_odeiv2_step_alloc (T, sys.dimension);
+    gsl_odeiv2_control * c = gsl_odeiv2_control_y_new (1e-6, 0.0);
+    gsl_odeiv2_evolve * e = gsl_odeiv2_evolve_alloc (sys.dimension);
+
+    double t = 0.0, t1 = 100.0;
+    double h = 1e-6;
+    double y[sys.dimension];
+    for (size_t i = 0; i < sys.dimension; i++) {
+        y[i] = y0[i];
     }
-    else
+
+    while (t < t1)
     {
-        y = y0;
+        int status = gsl_odeiv2_evolve_apply (e, c, s, &sys, &t, t1, &h, y);
+
+        if (status != GSL_SUCCESS)
+            break;
     }
-    t = t0;
+
+    gsl_odeiv2_evolve_free (e);
+    gsl_odeiv2_control_free (c);
+    gsl_odeiv2_step_free (s);
 }
-
-void ode::set_f_params(const std::vector<double> &params)
-{
-    f_params = params;
-}
-
-void ode::set_jac_params(const std::vector<double> &params)
-{
-    jac_params = params;
-}
-
-void ode::set_integrator(const std::string &name)
-{
-    if(name.empty())
-    {
-        return_code = 1;
-        std::clog << "ode::set_integrator: name is empty" << std::endl;
-        log(log_status::WARNING, "ode::set_integrator: name is empty");
-        return;
-    }
-    if(name == "vode")
-    {
-        
-    }
-    else
-    {
-        return_code = 1;
-        std::clog << "ode::set_integrator: 其他暂时没有写" << std::endl;
-        log(log_status::WARNING, "ode::set_integrator: 其他暂时没有写");
-        return;
-    }
-}
-
-double ode::integrate(double t1, bool step, bool relax)
-{
-}
-
-void ode::set_solout(std::function<int(double, const std::vector<double> &)> solout)
-{
-
-
-}
-
-bool ode::successful()
-{
-    // TODO: 无实现
-    return bool();
-}
-
-int ode::get_return_code()
-{
-    return return_code;
-}
-
-int ode::func(double t, const double y[], double f[], void *params)
-{
-    // 定义常微分方程
-    double y1 = y[0];
-    double y2 = y[1];
-    double y1dot = y2;
-    double y2dot = -y1;
-
-    // 返回常微分方程的右侧
-    f[0] = y1dot;
-    f[1] = y2dot;
-
-    return GSL_SUCCESS;
-}
-
 } // namespace acoular_cpp

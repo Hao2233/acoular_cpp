@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <numeric>
 #include <stdexcept>
 #include <tuple>
@@ -71,7 +72,7 @@ std::vector<std::vector<double>> Trajectory::traj(double t_start, double t_end, 
     return res;
 }
 
-// TODO ： 未完成
+// TODO: 未完成
 void Trajectory::splprep_(double *t, double *x, int *k, int *s, double *tck, int *info) const
 {
     int n = (*k) + 1; // 样本点的数量

@@ -14,7 +14,6 @@
 
 #include "tprocess.h"
 #include "spectra.h"
-#include "log_status.h"
 
 /**
  * @brief 工具函数，用于处理声学信号
@@ -89,22 +88,23 @@ std::vector<double> barspectrum(std::vector<double> data, std::vector<double> ff
 */
 std::pair<std::vector<double>, std::vector<double>> bardata(std::vector<double> data, std::vector<double> fc, bool bar = true, double xoffset = 0.0, int num = 3, double masked = -360.0);
 
-// TODO 在tool文件中新增加一些c++的工具函数
-
-// 1. 矩阵写入文件函数
-//  1. 一维矩阵
-//  2. 二维矩阵
-
+/**
+ * @brief 将一维矩阵写入文件
+ * 
+ * @param data 一维矩阵
+ * @param filename 文件名
+ * @return int 返回码
+ */
+int to_file(const std::vector<double> &data, const std::string &filename);
 
 /**
- * @brief log 日志函数
+ * @brief 将二维矩阵写入文件
  * 
- * @param sta 日志类型
- * @param mes 信息
- * 
- * @note 日志文件夹：log 按照日期记录
+ * @param data 二维矩阵
+ * @param filename 文件名
+ * @return int 返回码
  */
-void log(enum log_status sta,const std::string mes);
+int to_file(const std::vector<std::vector<double>> &data, const std::string &filename);
 
 } // namespace acoular_cpp
 #endif // _TOOLS_H_
